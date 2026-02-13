@@ -3,108 +3,246 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ArqueoConnect - Comunidad Científica</title>
-    <link rel="stylesheet" href="style.css">
+    <title>ArqueoConnect 2.0 - Feed Dinámico</title>
     <style>
-        body { background-color: #f0f2f5; color: #333; }
-        .connect-nav { background: #1565c0; color: white; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
-        .connect-nav a { color: white; text-decoration: none; font-weight: bold; }
+        :root {
+            --dark-pro: #0f172a;
+            --blue-accent: #3b82f6;
+            --text-main: #1e293b;
+            --bg: #f8fafc;
+            --tag-geo: #8b5cf6;
+            --tag-bio: #10b981;
+            --tag-art: #f59e0b;
+        }
 
-        .connect-container { display: grid; grid-template-columns: 280px 1fr 300px; gap: 20px; padding: 20px 5%; max-width: 1400px; margin: 0 auto; }
-
-        /* Sidebar Perfil */
-        .profile-card { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1); position: sticky; top: 80px; }
-        .profile-header { background: #1565c0; height: 60px; }
-        .profile-avatar { width: 80px; height: 80px; border-radius: 50%; border: 4px solid white; margin: -40px auto 10px; display: block; background: #ddd; }
-        .profile-info { text-align: center; padding: 15px; }
-
-        /* Feed de Noticias */
-        .feed-post { background: white; border-radius: 10px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .post-header { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
-        .user-img { width: 45px; height: 45px; border-radius: 50%; background: #eee; }
-        .post-content img { width: 100%; border-radius: 10px; margin: 15px 0; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         
-        .post-actions { display: flex; border-top: 1px solid #eee; padding-top: 15px; gap: 20px; }
-        .action-btn { background: none; border: none; color: #65676b; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 5px; }
-        .action-btn:hover { color: #1565c0; }
+        body { 
+            background: var(--bg); 
+            color: var(--text-main); 
+            font-family: 'Inter', -apple-system, sans-serif; 
+            overflow-x: hidden;
+        }
 
-        /* Tendencias */
-        .trends-card { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); position: sticky; top: 80px; }
-        .trend-item { margin-bottom: 15px; border-bottom: 1px solid #f0f2f5; padding-bottom: 5px; }
-        .trend-item small { color: #65676b; font-size: 0.75rem; }
+        /* Navbar */
+        .glass-nav {
+            background: var(--dark-pro);
+            color: white;
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        @media (min-width: 1024px) { .layout { grid-template-columns: 280px 1fr 300px; } }
+
+        /* Sistema de Filtros */
+        .filter-container {
+            position: sticky;
+            top: 70px;
+            z-index: 999;
+            background: var(--bg);
+            padding: 15px 5%;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .filter-strip {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .filter-btn {
+            padding: 8px 18px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: 0.2s;
+        }
+
+        .filter-btn.active {
+            background: var(--blue-accent);
+            color: white;
+            border-color: var(--blue-accent);
+        }
+
+        /* Publicaciones */
+        .post-paper {
+            background: white;
+            border-radius: 16px;
+            margin-bottom: 25px;
+            border: 1px solid #e2e8f0;
+            display: block; /* Para el filtrado */
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .post-header { padding: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .user-info { display: flex; gap: 10px; align-items: center; }
+        .user-info img { width: 40px; height: 40px; border-radius: 10px; }
+
+        .category-pill {
+            font-size: 0.65rem;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .post-content { padding: 0 15px 15px; }
+        .post-img { width: 100%; height: auto; border-radius: 12px; margin-top: 10px; }
+
+        .scientific-actions { display: flex; border-top: 1px solid #f1f5f9; padding: 5px; }
+        .sci-btn { flex: 1; padding: 10px; border: none; background: none; font-size: 0.8rem; font-weight: 600; color: #64748b; cursor: pointer; }
+
+        /* Widgets laterales */
+        .card { background: white; border-radius: 16px; padding: 20px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); margin-bottom: 20px; }
     </style>
 </head>
 <body>
 
-    <nav class="connect-nav">
-        <div><strong>🌐 ArqueoConnect</strong></div>
-        <a href="index.html">← Salir al Hub</a>
+    <nav class="glass-nav">
+        <div style="font-weight: 900; font-size: 1.4rem;">🏛️ ArqueoConnect</div>
+        <a href="index.html" style="color: white; text-decoration: none; font-size: 0.8rem;">Volver al Hub</a>
     </nav>
 
-    <div class="connect-container">
-        <aside>
-            <div class="profile-card">
-                <div class="profile-header"></div>
-                <img src="https://i.pravatar.cc/150?u=arqueo" class="profile-avatar">
-                <div class="profile-info">
-                    <h3>Dr. Julián R.</h3>
-                    <p style="color: #65676b; font-size: 0.9rem;">Director de Excavación</p>
-                    <hr style="margin: 15px 0; border: 0; border-top: 1px solid #eee;">
-                    <div style="text-align: left; font-size: 0.85rem;">
-                        <p>📍 Yacimiento: Itálica</p>
-                        <p>🏺 Hallazgos validados: 124</p>
-                    </div>
-                </div>
+    <div class="filter-container">
+        <div class="filter-strip">
+            <button class="filter-btn active" onclick="filterPosts('all')">Todo el Feed</button>
+            <button class="filter-btn" onclick="filterPosts('ceramica')">🏺 Cerámica</button>
+            <button class="filter-btn" onclick="filterPosts('bio')">💀 BioArqueología</button>
+            <button class="filter-btn" onclick="filterPosts('epigrafia')">📜 Epigrafía</button>
+            <button class="filter-btn" onclick="filterPosts('alertas')">⚠️ Alertas</button>
+        </div>
+    </div>
+
+    <div class="layout">
+        <aside class="hide-mobile">
+            <div class="card">
+                <h3>Impacto Global</h3>
+                <p style="font-size: 0.8rem; color: #64748b; margin-top: 5px;">Tu red científica ha crecido un 12% esta semana.</p>
             </div>
         </aside>
 
-        <main>
-            <div class="feed-post">
-                <div style="display: flex; gap: 10px;">
-                    <img src="https://i.pravatar.cc/150?u=arqueo" class="user-img">
-                    <input type="text" placeholder="¿Qué has descubierto hoy, Julián?" 
-                           style="flex: 1; border-radius: 25px; border: 1px solid #eee; padding: 0 20px; background: #f0f2f5;">
-                </div>
-            </div>
-
-            <div class="feed-post">
+        <main id="post-feed">
+            
+            <article class="post-paper" data-category="ceramica">
                 <div class="post-header">
-                    <img src="https://i.pravatar.cc/150?u=maria" class="user-img">
-                    <div>
-                        <h4 style="margin:0;">Dra. María López</h4>
-                        <small>Hace 2 horas • Proyecto ArqueoNet</small>
+                    <div class="user-info">
+                        <img src="https://i.pravatar.cc/150?u=1" alt="Avatar">
+                        <div><strong>Dr. Julian Rico</strong><br><small>Hace 20 min</small></div>
                     </div>
+                    <span class="category-pill" style="background:#e0f2fe; color:#0369a1;">Cerámica</span>
                 </div>
                 <div class="post-content">
-                    <p>¡Increíble hallazgo in situ! Acabamos de extraer una lucerna romana casi intacta en el Sector B. La estratigrafía confirma que pertenece a la UE 203. ¿Alguien reconoce este sello de alfarero?</p>
-                    <img src="https://images.unsplash.com/photo-1599599810694-b5b37304c041?auto=format&fit=crop&w=800" alt="Lucerna romana">
+                    <p>Identificado nuevo tipo de borde en <strong>Terra Sigillata Africana</strong>. La pasta sugiere una procedencia de los alfares de Cartago.</p>
+                    <img src="https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?auto=format&fit=crop&w=800" class="post-img">
                 </div>
-                <div class="post-actions">
-                    <button class="action-btn">✅ Validar Hallazgo</button>
-                    <button class="action-btn">💬 Comentar</button>
-                    <button class="action-btn">🔗 Compartir</button>
+                <div class="scientific-actions">
+                    <button class="sci-btn">⚖️ Validar</button>
+                    <button class="sci-btn">💬 Debatir</button>
                 </div>
-            </div>
+            </article>
+
+            <article class="post-paper" data-category="bio">
+                <div class="post-header">
+                    <div class="user-info">
+                        <img src="https://i.pravatar.cc/150?u=2" alt="Avatar">
+                        <div><strong>Dra. Ana Foss</strong><br><small>Hace 1h</small></div>
+                    </div>
+                    <span class="category-pill" style="background:#dcfce7; color:#166534;">Bioarqueología</span>
+                </div>
+                <div class="post-content">
+                    <p>Resultados preliminares de ADN mitocondrial en la <strong>UE-102</strong>. Indican parentesco directo entre los individuos del mausoleo norte.</p>
+                </div>
+                <div class="scientific-actions">
+                    <button class="sci-btn">⚖️ Validar</button>
+                    <button class="sci-btn">💬 Debatir</button>
+                </div>
+            </article>
+
+            <article class="post-paper" data-category="alertas">
+                <div class="post-header">
+                    <div class="user-info">
+                        <img src="https://i.pravatar.cc/150?u=3" alt="Avatar">
+                        <div><strong>Patrimonio Monitor</strong><br><small>URGENTE</small></div>
+                    </div>
+                    <span class="category-pill" style="background:#fee2e2; color:#991b1b;">Alerta</span>
+                </div>
+                <div class="post-content">
+                    <p>🚨 Detectado expolio activo en el área de protección B del yacimiento de Cástulo. Las autoridades ya han sido notificadas.</p>
+                </div>
+                <div class="scientific-actions">
+                    <button class="sci-btn">📢 Difundir</button>
+                </div>
+            </article>
+
+            <article class="post-paper" data-category="epigrafia">
+                <div class="post-header">
+                    <div class="user-info">
+                        <img src="https://i.pravatar.cc/150?u=4" alt="Avatar">
+                        <div><strong>Prof. Marcus</strong><br><small>Hace 3h</small></div>
+                    </div>
+                    <span class="category-pill" style="background:#fef3c7; color:#92400e;">Epigrafía</span>
+                </div>
+                <div class="post-content">
+                    <p>Inscripción votiva fragmentada hallada en el foro. He transcrito "GENIO LOCI...". ¿Algún experto en el área para confirmar la datación epigráfica?</p>
+                    <img src="https://images.unsplash.com/photo-1512404040224-4f51950a4900?auto=format&fit=crop&w=800" class="post-img">
+                </div>
+                <div class="scientific-actions">
+                    <button class="sci-btn">⚖️ Validar</button>
+                    <button class="sci-btn">💬 Debatir</button>
+                </div>
+            </article>
+
         </main>
 
         <aside>
-            <div class="trends-card">
-                <h3>Tendencias #</h3>
-                <div class="trend-item">
-                    <small>Campañas actuales</small>
-                    <p><strong>#ExcavacionItalica2026</strong></p>
-                </div>
-                <div class="trend-item">
-                    <small>Top Temas</small>
-                    <p><strong>#CeramicaSigillata</strong></p>
-                </div>
-                <div class="trend-item">
-                    <small>IA en Arqueología</small>
-                    <p><strong>#FotogrametriaPro</strong></p>
-                </div>
+            <div class="card">
+                <h4>Sugerencias de Red</h4>
+                <p style="font-size: 0.75rem; margin-top: 10px;">Conecta con expertos en <strong>Cerámica</strong> cercanos a tu ubicación.</p>
             </div>
         </aside>
     </div>
 
+    <script>
+        function filterPosts(category) {
+            // Actualizar botones de filtro
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+
+            // Filtrar posts
+            const posts = document.querySelectorAll('.post-paper');
+            posts.forEach(post => {
+                if (category === 'all') {
+                    post.style.display = 'block';
+                } else {
+                    const postCat = post.getAttribute('data-category');
+                    post.style.display = (postCat === category) ? 'block' : 'none';
+                }
+            });
+        }
+    </script>
 </body>
 </html>
