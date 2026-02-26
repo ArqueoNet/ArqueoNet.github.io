@@ -3,16 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ArqueoNet - Hub Central</title>
+    <title>ArqueoNet - Robot City Pobra</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* Navbar de tres columnas consistente con la suite */
+        .navbar {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            background: #ffffff;
+            padding: 0 5%;
+            height: 70px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .logo { 
+            font-size: 1.2rem; 
+            font-weight: bold; 
+            color: #8b5a2b; 
+        }
+
+        .brand-center {
+            font-weight: 900;
+            letter-spacing: 4px;
+            font-size: 1.4rem;
+            color: #f59e0b; /* Dorado llamativo */
+            text-align: center;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+            justify-content: flex-end;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* Mantenemos vuestro diseño de cuadrícula intacto */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: calc(50vh - 35px) calc(50vh - 35px);
+            height: calc(100vh - 70px);
+        }
+    </style>
 </head>
 <body>
     <header>
         <nav class="navbar">
             <div class="logo">🏛️ ArqueoNet</div>
+            <div class="brand-center">ROBOT CITY POBRA</div>
             <ul class="nav-links">
                 <li><a href="#">Inicio</a></li>
-                <li><a href="#">Nosotros</a></li>
+                <li><a href="nosotros.html">Nosotros</a></li>
             </ul>
         </nav>
     </header>

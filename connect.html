@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ArqueoConnect 2.0 - Feed Dinámico</title>
+    <title>ArqueoConnect 2.0 - Robot City Pobra</title>
     <style>
         :root {
             --dark-pro: #0f172a;
@@ -13,6 +13,7 @@
             --tag-geo: #8b5cf6;
             --tag-bio: #10b981;
             --tag-art: #f59e0b;
+            --gold: #f59e0b; /* Color para el brand central */
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -24,18 +25,42 @@
             overflow-x: hidden;
         }
 
-        /* Navbar */
+        /* Navbar de tres columnas */
         .glass-nav {
             background: var(--dark-pro);
             color: white;
-            padding: 1rem 5%;
-            display: flex;
-            justify-content: space-between;
+            padding: 0 5%;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr; /* Estructura para centrar */
             align-items: center;
+            height: 70px;
             position: sticky;
             top: 0;
             z-index: 1000;
         }
+
+        .nav-module { font-weight: 400; font-size: 0.9rem; opacity: 0.8; }
+
+        .nav-brand-center { 
+            font-weight: 900; 
+            letter-spacing: 4px; 
+            font-size: 1.4rem; 
+            color: var(--gold);
+            text-align: center;
+        }
+
+        .nav-back { text-align: right; }
+        .nav-back a {
+            color: white; 
+            text-decoration: none; 
+            font-size: 0.8rem; 
+            font-weight: 600; 
+            border: 1px solid rgba(255,255,255,0.3); 
+            padding: 8px 15px; 
+            border-radius: 20px;
+            transition: 0.3s;
+        }
+        .nav-back a:hover { background: white; color: var(--dark-pro); }
 
         .layout {
             display: grid;
@@ -91,7 +116,7 @@
             border-radius: 16px;
             margin-bottom: 25px;
             border: 1px solid #e2e8f0;
-            display: block; /* Para el filtrado */
+            display: block;
             animation: fadeIn 0.4s ease;
         }
 
@@ -122,8 +147,11 @@
 <body>
 
     <nav class="glass-nav">
-        <div style="font-weight: 900; font-size: 1.4rem;">🏛️ ArqueoConnect</div>
-        <a href="index.html" style="color: white; text-decoration: none; font-size: 0.8rem;">Volver al Hub</a>
+        <div class="nav-module">🏛️ ARQUEOCONNECT</div>
+        <div class="nav-brand-center">ROBOT CITY POBRA</div>
+        <div class="nav-back">
+            <a href="index.html">← VOLVER AL HUB</a>
+        </div>
     </nav>
 
     <div class="filter-container">
@@ -145,7 +173,6 @@
         </aside>
 
         <main id="post-feed">
-            
             <article class="post-paper" data-category="ceramica">
                 <div class="post-header">
                     <div class="user-info">
@@ -190,31 +217,12 @@
                     <span class="category-pill" style="background:#fee2e2; color:#991b1b;">Alerta</span>
                 </div>
                 <div class="post-content">
-                    <p>🚨 Detectado expolio activo en el área de protección B del yacimiento de Cástulo. Las autoridades ya han sido notificadas.</p>
+                    <p>🚨 Detectado expolio activo en el área de protección B del yacimiento de Cástulo.</p>
                 </div>
                 <div class="scientific-actions">
                     <button class="sci-btn">📢 Difundir</button>
                 </div>
             </article>
-
-            <article class="post-paper" data-category="epigrafia">
-                <div class="post-header">
-                    <div class="user-info">
-                        <img src="https://i.pravatar.cc/150?u=4" alt="Avatar">
-                        <div><strong>Prof. Marcus</strong><br><small>Hace 3h</small></div>
-                    </div>
-                    <span class="category-pill" style="background:#fef3c7; color:#92400e;">Epigrafía</span>
-                </div>
-                <div class="post-content">
-                    <p>Inscripción votiva fragmentada hallada en el foro. He transcrito "GENIO LOCI...". ¿Algún experto en el área para confirmar la datación epigráfica?</p>
-                    <img src="https://images.unsplash.com/photo-1512404040224-4f51950a4900?auto=format&fit=crop&w=800" class="post-img">
-                </div>
-                <div class="scientific-actions">
-                    <button class="sci-btn">⚖️ Validar</button>
-                    <button class="sci-btn">💬 Debatir</button>
-                </div>
-            </article>
-
         </main>
 
         <aside>
@@ -227,12 +235,10 @@
 
     <script>
         function filterPosts(category) {
-            // Actualizar botones de filtro
             const buttons = document.querySelectorAll('.filter-btn');
             buttons.forEach(btn => btn.classList.remove('active'));
             event.currentTarget.classList.add('active');
 
-            // Filtrar posts
             const posts = document.querySelectorAll('.post-paper');
             posts.forEach(post => {
                 if (category === 'all') {

@@ -1,1 +1,176 @@
 <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArqueoFund - Robot City Pobra</title>
+    <style>
+        :root {
+            --gold: #f59e0b;
+            --blue: #3b82f6;
+            --dark: #0f172a;
+            --bg: #f8fafc;
+        }
+
+        body { font-family: 'Inter', sans-serif; background: var(--bg); margin: 0; overflow-x: hidden; color: var(--dark); }
+
+        /* Navegación Mejorada */
+        nav {
+            background: var(--dark);
+            color: white;
+            padding: 0 5%;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr; /* Tres columnas para centrar perfectamente */
+            align-items: center;
+            height: 70px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-module { font-weight: 400; font-size: 0.9rem; opacity: 0.8; }
+
+        .nav-brand-center { 
+            font-weight: 900; 
+            letter-spacing: 4px; 
+            font-size: 1.4rem; 
+            color: var(--gold); /* Color llamativo para el centro */
+            text-align: center;
+        }
+
+        .nav-back { text-align: right; }
+        .nav-back a {
+            color: white; 
+            text-decoration: none; 
+            font-size: 0.8rem; 
+            font-weight: 600; 
+            border: 1px solid rgba(255,255,255,0.3); 
+            padding: 8px 15px; 
+            border-radius: 20px;
+            transition: 0.3s;
+        }
+        .nav-back a:hover { background: white; color: var(--dark); }
+
+        /* Estilos de las Historias y Dashboard (Se mantienen iguales) */
+        .stories-wrapper { background: white; border-bottom: 1px solid #e2e8f0; padding: 20px 0; }
+        .stories-container { display: flex; gap: 25px; padding: 0 5%; overflow-x: auto; scrollbar-width: none; }
+        .stories-container::-webkit-scrollbar { display: none; }
+
+        .story { display: flex; flex-direction: column; align-items: center; min-width: 95px; cursor: pointer; transition: 0.3s; }
+        .story:hover { transform: translateY(-5px); }
+
+        .progress-circle {
+            width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            background: conic-gradient(var(--gold) var(--p), #e2e8f0 0deg); padding: 4px;
+        }
+
+        .story-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid white; }
+        .story-label { font-size: 0.75rem; font-weight: 600; margin-top: 10px; text-align: center; }
+
+        .info-display { max-width: 1000px; margin: 30px auto; padding: 0 5%; min-height: 400px; }
+        .project-details { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; background: white; padding: 30px; border-radius: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); animation: fadeIn 0.5s ease-out; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .detail-img { width: 100%; height: 300px; object-fit: cover; border-radius: 15px; }
+        .fund-bar-total { background: #f1f5f9; height: 14px; border-radius: 7px; margin: 20px 0; overflow: hidden; }
+        .fund-bar-fill { background: var(--gold); height: 100%; border-radius: 7px; width: 0%; transition: width 1s ease-in-out; }
+
+        .donate-btn { width: 100%; padding: 18px; background: var(--dark); color: white; border: none; border-radius: 14px; font-weight: bold; cursor: pointer; font-size: 1rem; transition: 0.3s; }
+        .donate-btn:hover { background: var(--blue); transform: scale(1.02); }
+
+        .meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
+        .meta-item { background: #f8fafc; padding: 15px; border-radius: 12px; }
+        .meta-item small { color: #64748b; text-transform: uppercase; font-size: 0.7rem; font-weight: bold; }
+        .meta-item strong { display: block; font-size: 1.2rem; }
+
+        .placeholder-text { text-align: center; color: #94a3b8; margin-top: 100px; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-module">🏛️ ARQUEOFUND</div>
+        <div class="nav-brand-center">ROBOT CITY POBRA</div>
+        <div class="nav-back">
+            <a href="index.html">← VOLVER AL HUB</a>
+        </div>
+    </nav>
+
+    <div class="stories-wrapper">
+        <div class="stories-container">
+            <div class="story" onclick="updateDashboard('Misión Itálica', 'Excavación de las termas imperiales.', 1000000, 250000, 'https://images.unsplash.com/photo-1549413216-438997ca96a6?auto=format&fit=crop&w=800')">
+                <div class="progress-circle" style="--p: 90deg;">
+                    <img src="https://images.unsplash.com/photo-1549413216-438997ca96a6?auto=format&fit=crop&w=200" class="story-img">
+                </div>
+                <span class="story-label">Itálica 2026</span>
+            </div>
+
+            <div class="story" onclick="updateDashboard('Saqqara Scan', 'Escaneo láser de la pirámide.', 500000, 300000, 'https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?auto=format&fit=crop&w=800')">
+                <div class="progress-circle" style="--p: 216deg;">
+                    <img src="https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?auto=format&fit=crop&w=200" class="story-img">
+                </div>
+                <span class="story-label">Egipto 3D</span>
+            </div>
+
+            <div class="story" onclick="updateDashboard('Titanes de Atapuerca', 'Recuperación de restos de microfauna.', 150000, 127500, 'https://images.unsplash.com/photo-1506452305024-9d3f02d1c9b6?auto=format&fit=crop&w=800')">
+                <div class="progress-circle" style="--p: 306deg;">
+                    <img src="https://images.unsplash.com/photo-1506452305024-9d3f02d1c9b6?auto=format&fit=crop&w=200" class="story-img">
+                </div>
+                <span class="story-label">Atapuerca</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="info-display" id="infoDisplay">
+        <div class="placeholder-text">
+            <h2 style="font-size: 2rem;">Financia el Futuro del Pasado</h2>
+            <p>Selecciona una investigación en la barra superior para ver los detalles.</p>
+        </div>
+    </div>
+
+    <script>
+        function updateDashboard(title, desc, goal, raised, img) {
+            const percent = Math.round((raised / goal) * 100);
+            const container = document.getElementById('infoDisplay');
+            
+            container.innerHTML = `
+                <div class="project-details">
+                    <div>
+                        <img src="${img}" class="detail-img">
+                    </div>
+                    <div>
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                            <span style="background: #dcfce7; color: #166534; padding: 4px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: 800;">PROYECTO VERIFICADO</span>
+                            <span style="color: var(--gold); font-weight: 900; font-size: 1.5rem;">${percent}%</span>
+                        </div>
+                        <h2 style="margin: 10px 0;">${title}</h2>
+                        <p style="color: #64748b; line-height: 1.6;">${desc}</p>
+                        
+                        <div class="fund-bar-total">
+                            <div id="dynamicBar" class="fund-bar-fill"></div>
+                        </div>
+
+                        <div class="meta-grid">
+                            <div class="meta-item">
+                                <small>Recaudado</small>
+                                <strong>${raised.toLocaleString()} €</strong>
+                            </div>
+                            <div class="meta-item">
+                                <small>Meta Final</small>
+                                <strong>${goal.toLocaleString()} €</strong>
+                            </div>
+                        </div>
+
+                        <button class="donate-btn">CONTRIBUIR AHORA</button>
+                    </div>
+                </div>
+            `;
+
+            setTimeout(() => {
+                document.getElementById('dynamicBar').style.width = percent + "%";
+            }, 50);
+        }
+    </script>
+</body>
+</html>

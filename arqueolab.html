@@ -3,16 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ArqueoLab Pro - Registro Asistido</title>
+    <title>ArqueoLab Pro - Robot City Pobra</title>
     <style>
         :root { 
             --primary: #2e7d32; 
             --bg: #f4f7f4; 
             --accent: #f57c00;
+            --dark-pro: #0f172a;
+            --gold: #f59e0b;
         }
         
         body { background-color: var(--bg); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; }
+
+        /* Navbar de tres columnas consistente */
+        .glass-nav {
+            background: var(--dark-pro);
+            color: white;
+            padding: 0 5%;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            height: 70px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-module { font-weight: 400; font-size: 0.9rem; opacity: 0.8; text-transform: uppercase; letter-spacing: 1px; }
+
+        .nav-brand-center { 
+            font-weight: 900; 
+            letter-spacing: 4px; 
+            font-size: 1.4rem; 
+            color: var(--gold);
+            text-align: center;
+        }
+
+        .nav-back { text-align: right; }
+        .nav-back a {
+            color: white; 
+            text-decoration: none; 
+            font-size: 0.8rem; 
+            font-weight: 600; 
+            border: 1px solid rgba(255,255,255,0.3); 
+            padding: 8px 15px; 
+            border-radius: 20px;
+            transition: 0.3s;
+        }
+        .nav-back a:hover { background: white; color: var(--dark-pro); }
         
+        /* Estilos del Wizard */
         .wizard-container { 
             max-width: 800px; 
             margin: 40px auto; 
@@ -22,17 +62,8 @@
             overflow: hidden; 
         }
 
-        /* Indicador de Progreso */
-        .progress-bar { 
-            display: flex; 
-            background: #eee; 
-            height: 5px; 
-        }
-        .progress-fill { 
-            background: var(--primary); 
-            width: 25%; 
-            transition: 0.5s; 
-        }
+        .progress-bar { display: flex; background: #eee; height: 5px; }
+        .progress-fill { background: var(--primary); width: 25%; transition: 0.5s; }
 
         .step-content { padding: 40px; display: none; min-height: 450px; }
         .step-content.active { display: block; animation: slideIn 0.3s ease-out; }
@@ -50,7 +81,6 @@
             border-radius: 8px; font-size: 1rem; box-sizing: border-box;
         }
 
-        /* Navegación Inferior */
         .wizard-footer { 
             padding: 20px 40px; 
             background: #f9f9f9; 
@@ -59,23 +89,14 @@
             border-top: 1px solid #eee;
         }
 
-        .btn { 
-            padding: 12px 30px; 
-            border-radius: 25px; 
-            border: none; 
-            font-weight: bold; 
-            cursor: pointer; 
-            transition: 0.3s; 
-        }
+        .btn { padding: 12px 30px; border-radius: 25px; border: none; font-weight: bold; cursor: pointer; transition: 0.3s; }
         .btn-next { background: var(--primary); color: white; }
         .btn-next:hover { background: #1b5e20; transform: translateY(-2px); }
         .btn-prev { background: #ccc; color: #333; }
-        .btn-prev:disabled { opacity: 0; cursor: default; }
 
-        /* Tabla de Resultados */
         .history-section { max-width: 800px; margin: 40px auto 60px; padding: 0 20px; }
         table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        th { background: #2e7d32; color: white; padding: 15px; text-align: left; font-size: 0.8rem; text-transform: uppercase; }
+        th { background: var(--primary); color: white; padding: 15px; text-align: left; font-size: 0.8rem; text-transform: uppercase; }
         td { padding: 12px 15px; border-bottom: 1px solid #eee; font-size: 0.9rem; vertical-align: middle; }
         
         .thumb-img { width: 50px; height: 50px; border-radius: 6px; object-fit: cover; border: 1px solid #eee; }
@@ -85,8 +106,12 @@
 </head>
 <body>
 
-<nav style="background: var(--primary); color: white; padding: 15px 5%; text-align: center; font-weight: bold;">
-    📊 ARQUEOLAB PRO | Registro Asistido de Campo
+<nav class="glass-nav">
+    <div class="nav-module">📊 ARQUEOLAB PRO</div>
+    <div class="nav-brand-center">ROBOT CITY POBRA</div>
+    <div class="nav-back">
+        <a href="index.html">← VOLVER AL HUB</a>
+    </div>
 </nav>
 
 <div class="wizard-container">
@@ -197,27 +222,6 @@
                 <td><strong>#2026-ITAL-005</strong></td>
                 <td>Mosaico Policromado</td>
                 <td>UE 204</td>
-                <td><span class="status-tag tag-finalizado">✅ Finalizado</span></td>
-            </tr>
-            <tr>
-                <td><img src="https://images.unsplash.com/photo-1599599810694-b5b37304c041?auto=format&fit=crop&w=100" class="thumb-img"></td>
-                <td><strong>#2026-ITAL-006</strong></td>
-                <td>Fíbula de Bronce</td>
-                <td>UE 108</td>
-                <td><span class="status-tag tag-finalizado">✅ Finalizado</span></td>
-            </tr>
-            <tr>
-                <td><img src="https://images.unsplash.com/photo-1628153325000-8809e6d78ecf?auto=format&fit=crop&w=100" class="thumb-img"></td>
-                <td><strong>#2026-ITAL-007</strong></td>
-                <td>Bifaz de Sílex</td>
-                <td>UE 002</td>
-                <td><span class="status-tag tag-finalizado">✅ Finalizado</span></td>
-            </tr>
-            <tr>
-                <td><img src="https://images.unsplash.com/photo-1551009175-15bdf9dcb580?auto=format&fit=crop&w=100" class="thumb-img"></td>
-                <td><strong>#2026-ITAL-008</strong></td>
-                <td>Restos Óseos (Fémur)</td>
-                <td>UE 310</td>
                 <td><span class="status-tag tag-finalizado">✅ Finalizado</span></td>
             </tr>
         </tbody>
