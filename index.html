@@ -6,38 +6,49 @@
     <title>ArqueoNet - Robot City Pobra</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Navbar de tres columnas consistente con la suite */
+        /* Variables de diseño proporcional */
+        :root {
+            --nav-height: 4.5rem;
+            --brand-size: clamp(1rem, 4vw, 1.4rem);
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Navbar proporcional */
         .navbar {
             display: grid;
             grid-template-columns: 1fr auto 1fr;
             align-items: center;
             background: #ffffff;
             padding: 0 5%;
-            height: 70px;
+            height: var(--nav-height);
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 0.125rem 0.625rem rgba(0,0,0,0.1);
         }
 
         .logo { 
-            font-size: 1.2rem; 
+            font-size: clamp(0.9rem, 2vw, 1.2rem); 
             font-weight: bold; 
             color: #8b5a2b; 
         }
 
         .brand-center {
             font-weight: 900;
-            letter-spacing: 4px;
-            font-size: 1.4rem;
-            color: #f59e0b; /* Dorado llamativo */
+            letter-spacing: 0.25rem;
+            font-size: var(--brand-size);
+            color: #f59e0b;
             text-align: center;
         }
 
         .nav-links {
             display: flex;
             list-style: none;
-            gap: 20px;
+            gap: 1.25rem;
             justify-content: flex-end;
             margin: 0;
             padding: 0;
@@ -50,12 +61,64 @@
             font-size: 0.9rem;
         }
 
-        /* Mantenemos vuestro diseño de cuadrícula intacto */
+        /* Cuadrícula principal proporcional */
         .main-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            grid-template-rows: calc(50vh - 35px) calc(50vh - 35px);
-            height: calc(100vh - 70px);
+            grid-template-columns: repeat(2, 1fr);
+            min-height: calc(100vh - var(--nav-height));
+        }
+
+        /* Ajuste para móviles: de 2x2 a 1 columna */
+        @media (max-width: 768px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+            .navbar {
+                grid-template-columns: 1fr 1fr;
+                height: auto;
+                padding: 1rem 5%;
+            }
+            .brand-center {
+                grid-column: span 2;
+                order: -1;
+                margin-bottom: 0.5rem;
+            }
+        }
+
+        /* Estilos de contenido escalables */
+        .grid-item {
+            display: flex;
+            flex-direction: row;
+            overflow: hidden;
+        }
+
+        .text-side {
+            padding: 5%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            flex: 1;
+        }
+
+        h1 {
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
+            margin: 0.5rem 0;
+        }
+
+        p {
+            font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+            line-height: 1.5;
+        }
+
+        .btn-visit {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.75rem 1.5rem;
+            background: #8b5a2b;
+            color: white;
+            text-decoration: none;
+            border-radius: 0.5rem;
+            width: fit-content;
         }
     </style>
 </head>
@@ -65,7 +128,7 @@
             <div class="logo">🏛️ ArqueoNet</div>
             <div class="brand-center">ROBOT CITY POBRA</div>
             <ul class="nav-links">
-                <li><a href="#">Inicio</a></li>
+                <li><a href="index.html">Inicio</a></li>
                 <li><a href="nosotros.html">Nosotros</a></li>
             </ul>
         </nav>

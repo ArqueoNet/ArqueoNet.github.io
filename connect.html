@@ -3,252 +3,326 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ArqueoConnect 2.0 - Robot City Pobra</title>
+    <title>ArqueoConnect Pro - Red de Investigación</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --dark-pro: #0f172a;
-            --blue-accent: #3b82f6;
+            --dark-navy: #0f172a;
+            --museum-bg: #f8fafc;
+            --gold: #f59e0b;
+            --gold-light: #fef3c7;
+            --accent-blue: #2563eb;
             --text-main: #1e293b;
-            --bg: #f8fafc;
-            --tag-geo: #8b5cf6;
-            --tag-bio: #10b981;
-            --tag-art: #f59e0b;
-            --gold: #f59e0b; /* Color para el brand central */
+            --border: #e2e8f0;
+            --card-white: #ffffff;
+            /* Medidas Proporcionales */
+            --nav-h: 4.5rem;
+            --side-w: 22%;
+            --gap: 1.5rem;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        
         body { 
-            background: var(--bg); 
-            color: var(--text-main); 
-            font-family: 'Inter', -apple-system, sans-serif; 
+            background-color: var(--museum-bg); 
+            font-family: 'Inter', sans-serif; 
+            color: var(--text-main);
             overflow-x: hidden;
         }
 
-        /* Navbar de tres columnas */
+        /* --- NAVEGACIÓN --- */
         .glass-nav {
-            background: var(--dark-pro);
+            background: var(--dark-navy);
             color: white;
-            padding: 0 5%;
             display: grid;
-            grid-template-columns: 1fr auto 1fr; /* Estructura para centrar */
+            grid-template-columns: 1fr auto 1fr;
             align-items: center;
-            height: 70px;
+            height: var(--nav-h);
+            padding: 0 5%;
             position: sticky;
             top: 0;
             z-index: 1000;
         }
+        .nav-brand { font-weight: 900; letter-spacing: 0.3rem; color: var(--gold); font-size: 1.2rem; }
+        .nav-back a { 
+            color: white; text-decoration: none; font-size: 0.8rem; font-weight: 600;
+            padding: 0.6rem 1.2rem; border: 1px solid rgba(255,255,255,0.2); border-radius: 2rem;
+        }
 
-        .nav-module { font-weight: 400; font-size: 0.9rem; opacity: 0.8; }
+        /* --- LAYOUT PRINCIPAL --- */
+        .main-container {
+            max-width: 95%;
+            margin: var(--gap) auto;
+            display: flex;
+            gap: var(--gap);
+            align-items: flex-start;
+        }
 
-        .nav-brand-center { 
-            font-weight: 900; 
-            letter-spacing: 4px; 
-            font-size: 1.4rem; 
-            color: var(--gold);
+        /* --- COLUMNA IZQUIERDA: PERFIL Y GRUPOS --- */
+        .sidebar-left { width: var(--side-w); position: sticky; top: 6rem; }
+
+        .profile-card {
+            background: var(--card-white);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
             text-align: center;
         }
-
-        .nav-back { text-align: right; }
-        .nav-back a {
-            color: white; 
-            text-decoration: none; 
-            font-size: 0.8rem; 
-            font-weight: 600; 
-            border: 1px solid rgba(255,255,255,0.3); 
-            padding: 8px 15px; 
-            border-radius: 20px;
-            transition: 0.3s;
+        .profile-img { 
+            width: 6rem; height: 6rem; background: #ddd; border-radius: 50%; 
+            margin: 0 auto 1rem; border: 3px solid var(--gold); object-fit: cover;
         }
-        .nav-back a:hover { background: white; color: var(--dark-pro); }
-
-        .layout {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            padding: 20px 5%;
-            max-width: 1400px;
-            margin: 0 auto;
+        .reputation-shield {
+            background: var(--gold-light); color: #92400e;
+            font-size: 0.65rem; font-weight: 800; padding: 0.3rem 0.8rem;
+            border-radius: 1rem; display: inline-block; margin-bottom: 1rem;
         }
+        .profile-bio { font-size: 0.85rem; color: #64748b; margin: 0.8rem 0; }
+        .research-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; justify-content: center; margin-top: 1rem; }
+        .tag-small { background: #f1f5f9; font-size: 0.65rem; padding: 0.2rem 0.5rem; border-radius: 0.3rem; font-weight: 600; }
 
-        @media (min-width: 1024px) { .layout { grid-template-columns: 280px 1fr 300px; } }
-
-        /* Sistema de Filtros */
-        .filter-container {
-            position: sticky;
-            top: 70px;
-            z-index: 999;
-            background: var(--bg);
-            padding: 15px 5%;
-            border-bottom: 1px solid #e2e8f0;
+        .menu-groups {
+            background: var(--card-white); border-radius: 1rem; padding: 1.2rem;
+            margin-top: var(--gap); border: 1px solid var(--border);
         }
+        .menu-groups h4 { font-size: 0.8rem; text-transform: uppercase; color: #94a3b8; margin-bottom: 1rem; }
+        .group-item { 
+            display: flex; align-items: center; gap: 0.8rem; padding: 0.6rem;
+            font-size: 0.85rem; color: var(--text-main); text-decoration: none; border-radius: 0.5rem;
+        }
+        .group-item:hover { background: #f8fafc; color: var(--accent-blue); }
 
-        .filter-strip {
-            display: flex;
-            gap: 10px;
-            overflow-x: auto;
-            padding-bottom: 5px;
-            max-width: 1400px;
-            margin: 0 auto;
+        /* --- COLUMNA CENTRAL: EL MURO --- */
+        .feed-center { flex: 1; }
+
+        /* Consola de Publicación */
+        .post-creator {
+            background: var(--card-white); border-radius: 1rem; padding: 1.2rem;
+            border: 1px solid var(--border); margin-bottom: 1.5rem;
+        }
+        .creator-tabs { display: flex; gap: 1rem; margin-bottom: 1rem; border-bottom: 1px solid #f1f5f9; padding-bottom: 0.8rem; }
+        .tab-btn { background: none; border: none; font-size: 0.8rem; font-weight: 700; color: #94a3b8; cursor: pointer; }
+        .tab-btn.active { color: var(--accent-blue); }
+        .post-input { 
+            width: 100%; border: none; background: #f8fafc; padding: 1rem; border-radius: 0.8rem;
+            font-family: inherit; resize: none; outline: none; margin-bottom: 1rem;
         }
 
-        .filter-btn {
-            padding: 8px 18px;
-            background: white;
-            border: 1px solid #e2e8f0;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-            white-space: nowrap;
-            transition: 0.2s;
+        /* Filtros del Feed */
+        .filter-strip { display: flex; gap: 0.6rem; overflow-x: auto; margin-bottom: 1.5rem; padding-bottom: 0.5rem; }
+        .filter-pill { 
+            background: white; border: 1px solid var(--border); padding: 0.5rem 1.2rem;
+            border-radius: 2rem; font-size: 0.75rem; font-weight: 700; cursor: pointer; white-space: nowrap;
+        }
+        .filter-pill.active { background: var(--dark-navy); color: white; }
+
+        /* Tarjetas de Publicación Científica */
+        .paper-card {
+            background: var(--card-white); border-radius: 1rem; padding: 1.5rem;
+            border: 1px solid var(--border); margin-bottom: var(--gap);
+        }
+        .paper-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
+        .author-info { display: flex; gap: 0.8rem; align-items: center; }
+        .author-avatar { width: 2.5rem; height: 2.5rem; background: #eee; border-radius: 50%; }
+        .paper-category { background: var(--gold-light); color: #92400e; font-size: 0.6rem; font-weight: 800; padding: 0.2rem 0.5rem; border-radius: 0.2rem; }
+        
+        .paper-content p { font-size: 0.95rem; line-height: 1.6; color: #334155; }
+        .paper-media { width: 100%; border-radius: 0.8rem; margin: 1rem 0; background: #f1f5f9; }
+
+        .paper-actions { 
+            display: flex; gap: 1.5rem; padding-top: 1rem; border-top: 1px solid #f1f5f9;
+            margin-top: 1rem; font-size: 0.8rem; font-weight: 700; color: #64748b;
         }
 
-        .filter-btn.active {
-            background: var(--blue-accent);
-            color: white;
-            border-color: var(--blue-accent);
+        /* --- COLUMNA DERECHA: COLABORACIONES Y EVENTOS --- */
+        .sidebar-right { width: 25%; }
+
+        .widget-card {
+            background: var(--card-white); border-radius: 1rem; padding: 1.2rem;
+            border: 1px solid var(--border); margin-bottom: var(--gap);
         }
+        .widget-card h4 { font-size: 0.85rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+        
+        .colab-item { padding: 0.8rem 0; border-bottom: 1px solid #f1f5f9; }
+        .colab-item:last-child { border: none; }
+        .colab-item b { font-size: 0.85rem; display: block; color: var(--accent-blue); }
+        .colab-item span { font-size: 0.75rem; color: #64748b; }
 
-        /* Publicaciones */
-        .post-paper {
-            background: white;
-            border-radius: 16px;
-            margin-bottom: 25px;
-            border: 1px solid #e2e8f0;
-            display: block;
-            animation: fadeIn 0.4s ease;
+        .event-card { 
+            background: var(--dark-navy); color: white; padding: 1rem; border-radius: 0.8rem;
+            margin-top: 0.8rem; position: relative; overflow: hidden;
         }
+        .event-card small { color: var(--gold); font-weight: 800; }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        .post-header { padding: 15px; display: flex; justify-content: space-between; align-items: center; }
-        .user-info { display: flex; gap: 10px; align-items: center; }
-        .user-info img { width: 40px; height: 40px; border-radius: 10px; }
-
-        .category-pill {
-            font-size: 0.65rem;
-            padding: 4px 10px;
-            border-radius: 4px;
-            font-weight: 800;
-            text-transform: uppercase;
+        /* Mensajería Flotante */
+        .chat-hub {
+            position: fixed; bottom: 2rem; right: 2rem;
+            background: var(--accent-blue); color: white;
+            width: 4rem; height: 4rem; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4);
+            cursor: pointer; z-index: 2000; font-size: 1.5rem;
         }
-
-        .post-content { padding: 0 15px 15px; }
-        .post-img { width: 100%; height: auto; border-radius: 12px; margin-top: 10px; }
-
-        .scientific-actions { display: flex; border-top: 1px solid #f1f5f9; padding: 5px; }
-        .sci-btn { flex: 1; padding: 10px; border: none; background: none; font-size: 0.8rem; font-weight: 600; color: #64748b; cursor: pointer; }
-
-        /* Widgets laterales */
-        .card { background: white; border-radius: 16px; padding: 20px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); margin-bottom: 20px; }
     </style>
 </head>
 <body>
 
-    <nav class="glass-nav">
-        <div class="nav-module">🏛️ ARQUEOCONNECT</div>
-        <div class="nav-brand-center">ROBOT CITY POBRA</div>
-        <div class="nav-back">
-            <a href="index.html">← VOLVER AL HUB</a>
-        </div>
-    </nav>
+<nav class="glass-nav">
+    <div class="nav-brand">ARQUEOCONNECT</div>
+    <div style="text-align: center; opacity: 0.5; font-size: 0.8rem; letter-spacing: 2px;">COMUNIDAD CIENTÍFICA</div>
+    <div class="nav-back"><a href="index.html">← VOLVER A ARQUEONET</a></div>
+</nav>
 
-    <div class="filter-container">
+<div class="main-container">
+    
+    <aside class="sidebar-left">
+        <div class="profile-card">
+            <div class="profile-img" style="background: url('https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=200') center/cover;"></div>
+            <span class="reputation-shield">🏆 EXPERTO EN CERÁMICA ROMA</span>
+            <h3>Dr. Marco Valerio</h3>
+            <p class="profile-bio">Investigador Senior en la Universidad de Robot City. Especialista en rutas comerciales del S.II.</p>
+            
+            <div class="stats-row" style="display:flex; justify-content: space-around; margin: 1rem 0;">
+                <div><b>142</b><br><small>H-Index</small></div>
+                <div><b>2.4k</b><br><small>Citas</small></div>
+            </div>
+
+            <div class="research-tags">
+                <span class="tag-small">Anforología</span>
+                <span class="tag-small">Epigrafía</span>
+                <span class="tag-small">LIDAR</span>
+            </div>
+
+            <div style="margin-top: 1.5rem; border-top: 1px solid #eee; padding-top: 1rem;">
+                <a href="arqueopedia.html" style="font-size: 0.75rem; color: var(--accent-blue); text-decoration: none; font-weight: 700;">Ver mis Gemelos en ArqueoPedia →</a>
+            </div>
+        </div>
+
+        <div class="menu-groups">
+            <h4>Grupos Temáticos</h4>
+            <a href="#" class="group-item">🏺 Cerámica Romana</a>
+            <a href="#" class="group-item">🦕 Paleontología</a>
+            <a href="#" class="group-item">🎨 Arte Rupestre</a>
+            <a href="#" class="group-item">🏗️ Restauración Pro</a>
+            <a href="#" class="group-item">🎓 Zona Estudiantes</a>
+        </div>
+    </aside>
+
+    <main class="feed-center">
+        
+        <div class="post-creator">
+            <div class="creator-tabs">
+                <button class="tab-btn active">Publicar Hallazgo</button>
+                <button class="tab-btn">Duda Técnica</button>
+                <button class="tab-btn">Solicitar Ayuda</button>
+            </div>
+            <textarea class="post-input" placeholder="¿Qué has descubierto hoy, Dr. Marco?"></textarea>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div style="display: flex; gap: 1rem; color: #64748b; font-size: 1.2rem; cursor: pointer;">
+                    📷 🎥 📦
+                </div>
+                <button style="background: var(--accent-blue); color: white; border: none; padding: 0.6rem 1.5rem; border-radius: 0.5rem; font-weight: 700; cursor: pointer;">Publicar Avance</button>
+            </div>
+        </div>
+
         <div class="filter-strip">
-            <button class="filter-btn active" onclick="filterPosts('all')">Todo el Feed</button>
-            <button class="filter-btn" onclick="filterPosts('ceramica')">🏺 Cerámica</button>
-            <button class="filter-btn" onclick="filterPosts('bio')">💀 BioArqueología</button>
-            <button class="filter-btn" onclick="filterPosts('epigrafia')">📜 Epigrafía</button>
-            <button class="filter-btn" onclick="filterPosts('alertas')">⚠️ Alertas</button>
+            <div class="filter-pill active">Todo el Muro</div>
+            <div class="filter-pill">Excavaciones en Vivo</div>
+            <div class="filter-pill">Debates Abiertos</div>
+            <div class="filter-pill">Mensajería privada</div>
         </div>
-    </div>
 
-    <div class="layout">
-        <aside class="hide-mobile">
-            <div class="card">
-                <h3>Impacto Global</h3>
-                <p style="font-size: 0.8rem; color: #64748b; margin-top: 5px;">Tu red científica ha crecido un 12% esta semana.</p>
+        <article class="paper-card">
+            <div class="paper-header">
+                <div class="author-info">
+                    <div class="author-avatar" style="background: url('https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=100') center/cover;"></div>
+                    <div>
+                        <h4 style="font-size: 0.9rem;">Dra. Elena Sotelo</h4>
+                        <small style="color: #94a3b8;">Hace 3 horas • ArqueoLab Sector 4</small>
+                    </div>
+                </div>
+                <span class="paper-category">AVANCE DE EXCAVACIÓN</span>
             </div>
-        </aside>
-
-        <main id="post-feed">
-            <article class="post-paper" data-category="ceramica">
-                <div class="post-header">
-                    <div class="user-info">
-                        <img src="https://i.pravatar.cc/150?u=1" alt="Avatar">
-                        <div><strong>Dr. Julian Rico</strong><br><small>Hace 20 min</small></div>
-                    </div>
-                    <span class="category-pill" style="background:#e0f2fe; color:#0369a1;">Cerámica</span>
-                </div>
-                <div class="post-content">
-                    <p>Identificado nuevo tipo de borde en <strong>Terra Sigillata Africana</strong>. La pasta sugiere una procedencia de los alfares de Cartago.</p>
-                    <img src="https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?auto=format&fit=crop&w=800" class="post-img">
-                </div>
-                <div class="scientific-actions">
-                    <button class="sci-btn">⚖️ Validar</button>
-                    <button class="sci-btn">💬 Debatir</button>
-                </div>
-            </article>
-
-            <article class="post-paper" data-category="bio">
-                <div class="post-header">
-                    <div class="user-info">
-                        <img src="https://i.pravatar.cc/150?u=2" alt="Avatar">
-                        <div><strong>Dra. Ana Foss</strong><br><small>Hace 1h</small></div>
-                    </div>
-                    <span class="category-pill" style="background:#dcfce7; color:#166534;">Bioarqueología</span>
-                </div>
-                <div class="post-content">
-                    <p>Resultados preliminares de ADN mitocondrial en la <strong>UE-102</strong>. Indican parentesco directo entre los individuos del mausoleo norte.</p>
-                </div>
-                <div class="scientific-actions">
-                    <button class="sci-btn">⚖️ Validar</button>
-                    <button class="sci-btn">💬 Debatir</button>
-                </div>
-            </article>
-
-            <article class="post-paper" data-category="alertas">
-                <div class="post-header">
-                    <div class="user-info">
-                        <img src="https://i.pravatar.cc/150?u=3" alt="Avatar">
-                        <div><strong>Patrimonio Monitor</strong><br><small>URGENTE</small></div>
-                    </div>
-                    <span class="category-pill" style="background:#fee2e2; color:#991b1b;">Alerta</span>
-                </div>
-                <div class="post-content">
-                    <p>🚨 Detectado expolio activo en el área de protección B del yacimiento de Cástulo.</p>
-                </div>
-                <div class="scientific-actions">
-                    <button class="sci-btn">📢 Difundir</button>
-                </div>
-            </article>
-        </main>
-
-        <aside>
-            <div class="card">
-                <h4>Sugerencias de Red</h4>
-                <p style="font-size: 0.75rem; margin-top: 10px;">Conecta con expertos en <strong>Cerámica</strong> cercanos a tu ubicación.</p>
+            <div class="paper-content">
+                <p>Acabamos de documentar una estructura circular en la UE 104. Los materiales sugieren una funcionalidad doméstica. <b>¿Opiniones sobre el sistema de drenaje mostrado en el modelo 3D adjunto?</b></p>
+                <img src="https://images.unsplash.com/photo-1599110906885-b02449830860?auto=format&fit=crop&w=800" class="paper-media" alt="Hallazgo">
             </div>
-        </aside>
-    </div>
+            <div class="paper-actions">
+                <span>🔬 Validar Hallazgo</span>
+                <span>💬 Debatir (14)</span>
+                <span>⤴️ Citar en Proyecto</span>
+            </div>
+        </article>
 
-    <script>
-        function filterPosts(category) {
-            const buttons = document.querySelectorAll('.filter-btn');
-            buttons.forEach(btn => btn.classList.remove('active'));
-            event.currentTarget.classList.add('active');
+    </main>
 
-            const posts = document.querySelectorAll('.post-paper');
-            posts.forEach(post => {
-                if (category === 'all') {
-                    post.style.display = 'block';
-                } else {
-                    const postCat = post.getAttribute('data-category');
-                    post.style.display = (postCat === category) ? 'block' : 'none';
-                }
-            });
-        }
-    </script>
+    <aside class="sidebar-right">
+        
+        <div class="widget-card">
+            <h4>🤝 Colaboraciones Abiertas</h4>
+            <div class="colab-item">
+                <b>Experto en Análisis de Polen</b>
+                <span>Proyecto: Neolítico en Galicia<br><small>Buscan: Investigador Externo</small></span>
+            </div>
+            <div class="colab-item">
+                <b>Voluntarios: Campaña Verano</b>
+                <span>Yacimiento de Cástulo<br><small>Buscan: Estudiantes de Grado</small></span>
+            </div>
+            <button style="width: 100%; margin-top: 1rem; padding: 0.5rem; border: 1px solid var(--accent-blue); background: none; color: var(--accent-blue); border-radius: 0.5rem; font-size: 0.75rem; font-weight: 700; cursor: pointer;">Ver más ofertas</button>
+        </div>
+
+        <div class="widget-card">
+            <h4>📅 Webinars y Eventos</h4>
+            <div class="event-card">
+                <small>MAÑANA 10:00 AM</small>
+                <p style="font-size: 0.85rem; font-weight: 700; margin-top: 0.3rem;">Fotogrametría Avanzada con IA</p>
+                <button style="background: var(--gold); border: none; width: 100%; font-size: 0.7rem; font-weight: 800; padding: 0.4rem; margin-top: 0.8rem; border-radius: 0.3rem;">UNIRSE A LA SESIÓN</button>
+            </div>
+        </div>
+
+        <div class="widget-card" style="background: #ecfdf5; border-color: #10b981;">
+            <h4 style="color: #065f46;">🚨 Alertas ArqueoLab</h4>
+            <p style="font-size: 0.75rem; color: #065f46;">Se han registrado 4 piezas nuevas en el laboratorio en los últimos 20 minutos.</p>
+            <a href="arqueolab.html" style="font-size: 0.7rem; font-weight: 800; color: #065f46; display: block; margin-top: 0.5rem;">ACCEDER AL LAB LIVE →</a>
+        </div>
+
+    </aside>
+
+</div>
+
+<div class="chat-hub" title="Mensajería y Videollamadas">
+    💬
+</div>
+
+<script>
+    // Sistema simple de cambio de pestañas de publicación
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const postInput = document.querySelector('.post-input');
+
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            tabBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            // Cambiar placeholder según la pestaña
+            if(btn.innerText === "Duda Técnica") {
+                postInput.placeholder = "¿Qué problema técnico o teórico deseas discutir con la comunidad?";
+            } else if(btn.innerText === "Solicitar Ayuda") {
+                postInput.placeholder = "Describe qué tipo de experto, voluntario o material necesitas para tu proyecto...";
+            } else {
+                postInput.placeholder = "¿Qué has descubierto hoy, Dr. Marco?";
+            }
+        });
+    });
+
+    // Filtros de Feed
+    const filters = document.querySelectorAll('.filter-pill');
+    filters.forEach(pill => {
+        pill.addEventListener('click', () => {
+            filters.forEach(p => p.classList.remove('active'));
+            pill.classList.add('active');
+        });
+    });
+</script>
+
 </body>
 </html>
