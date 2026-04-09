@@ -162,6 +162,85 @@
             box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4);
             cursor: pointer; z-index: 2000; font-size: 1.5rem;
         }
+
+        /* ==============================================
+        FIX ESPECÍFICO PARA EL SOLAPAMIENTO EN MÓVIL
+        ============================================== */
+        @media (max-width: 768px) {
+            
+            /* 1. Navbar: Forzamos que los elementos se apilen verticalmente */
+            .glass-nav {
+                display: flex;
+                flex-direction: column; /* Apilar elementos */
+                height: auto; /* Dejar que crezca según el contenido */
+                padding: 15px 5%;
+                gap: 10px;
+                text-align: center;
+            }
+
+            /* Ocultamos el texto lateral para limpiar la vista */
+            .nav-module {
+                display: none;
+            }
+
+            /* Reducimos drásticamente el título naranja */
+            .nav-brand-center {
+                font-size: 1.1rem; /* Mucho más pequeño para que no tape nada */
+                letter-spacing: 2px;
+                margin: 0;
+                width: 100%;
+            }
+
+            /* El botón de volver, centrado y con margen */
+            .nav-back {
+                width: 100%;
+                text-align: center;
+            }
+            
+            .nav-back a {
+                display: inline-block;
+                font-size: 0.7rem;
+                padding: 5px 15px;
+                border-radius: 15px;
+            }
+
+            /* 2. Pestañas: Arreglamos el solapamiento con el buscador */
+            .museum-tabs {
+                display: flex;
+                flex-wrap: nowrap; /* No saltar de línea */
+                overflow-x: auto; /* Permitir deslizamiento lateral */
+                justify-content: flex-start;
+                padding: 15px;
+                background: #1a1a1a;
+                position: relative; /* Asegura que no flote sobre otros */
+                z-index: 10;
+            }
+
+            .tab-btn {
+                flex: 0 0 auto; /* No dejar que se encojan */
+                font-size: 0.7rem;
+                padding: 5px 10px;
+            }
+
+            /* 3. Galería: Una sola columna para que las fotos se vean bien */
+            .museum-grid {
+                grid-template-columns: 1fr;
+                padding: 10px 5%;
+            }
+
+            /* Ajuste de la carta para que no sea tan alta */
+            .artifact-img {
+                height: 200px;
+            }
+        }
+
+        /* Ajuste extra para móviles muy pequeños (portrait) */
+        @media (max-width: 480px) {
+            .nav-brand-center {
+                font-size: 1rem;
+                letter-spacing: 1px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -244,7 +323,7 @@
             </div>
             <div class="paper-content">
                 <p>Acabamos de documentar una estructura circular en la UE 104. Los materiales sugieren una funcionalidad doméstica. <b>¿Opiniones sobre el sistema de drenaje mostrado en el modelo 3D adjunto?</b></p>
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQK6NWakcvLwKDgZGBs8h9JS7PTbgopJ_USQ&s" class="paper-media" alt="Hallazgo">
+                <img src="https://images.unsplash.com/photo-1599110906885-b02449830860?auto=format&fit=crop&w=800" class="paper-media" alt="Hallazgo">
             </div>
             <div class="paper-actions">
                 <span>🔬 Validar Hallazgo</span>

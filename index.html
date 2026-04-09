@@ -68,6 +68,11 @@
             min-height: calc(100vh - var(--nav-height));
         }
 
+        /* Ocultar enlaces de móvil en escritorio */
+        .mobile-only {
+            display: none;
+        }
+
         /* Ajuste para móviles: de 2x2 a 1 columna */
         @media (max-width: 768px) {
             .main-grid {
@@ -120,6 +125,79 @@
             border-radius: 0.5rem;
             width: fit-content;
         }
+
+        /* Estilos para el icono hamburguesa (oculto por defecto en PC) */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+            z-index: 1100;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: #8b5a2b;
+            border-radius: 2px;
+            transition: 0.3s;
+        }
+
+        /* Ajustes para móviles (Media Query) */
+        @media (max-width: 768px) {
+            .navbar {
+                display: flex; /* Cambiamos grid por flex para mejor control */
+                justify-content: space-between;
+                padding: 0 5%;
+            }
+
+            .brand-center {
+                display: none; /* Opcional: ocultar el texto largo en móviles para ganar espacio */
+            }
+
+            .hamburger {
+                display: flex; /* Mostramos el icono */
+            }
+
+            .nav-links {
+                position: fixed;
+                right: -100%; 
+                top: 0; /* Cámbialo de var(--nav-height) a 0 para que cubra todo */
+                background-color: white;
+                width: 80%; /* Un ancho más razonable */
+                height: 100vh;
+                display: flex;
+                flex-direction: column;
+                justify-content: center; /* Centra los links verticalmente */
+                align-items: center;
+                transition: 0.4s ease-in-out;
+                z-index: 10000; /* Prioridad máxima */
+                box-shadow: -5px 0 15px rgba(0,0,0,0.3);
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            /* Asegúrate de que la X sea visible cuando el menú se abra */
+            .hamburger {
+                z-index: 10001; 
+            }
+
+            /* Animación de la hamburguesa a X */
+            .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+            .hamburger.open span:nth-child(2) { opacity: 0; }
+            .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(7px, -6px); }
+
+            .mobile-only {
+                display: block; /* Se hacen visibles solo aquí */
+            }
+            
+            .nav-links li {
+                width: 100%;
+                text-align: center;
+            }
+        }
     </style>
 </head>
 <body>
@@ -127,9 +205,20 @@
         <nav class="navbar">
             <div class="logo">🏛️ ArqueoNet</div>
             <div class="brand-center">ROBOT CITY POBRA</div>
-            <ul class="nav-links">
+            
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <ul class="nav-links" id="nav-links">
                 <li><a href="index.html">Inicio</a></li>
                 <li><a href="nosotros.html">Nosotros</a></li>
+                <li class="mobile-only"><a href="arqueolab.html">ArqueoLab</a></li>
+                <li class="mobile-only"><a href="loginconnect.html">ArqueoConnect</a></li>
+                <li class="mobile-only"><a href="arqueopedia.html">ArqueoPedia</a></li>
+                <li class="mobile-only"><a href="fund.html">ArqueoFund</a></li>
             </ul>
         </nav>
     </header>
@@ -138,10 +227,11 @@
         <section class="grid-item lab">
             <div class="image-side img-lab"></div>
             <div class="text-side">
+             
                 <span class="tag">Herramienta Pro</span>
                 <h1>ArqueoLab</h1>
                 <p>El Cuaderno Digital con IA para el registro en tiempo real en el yacimiento.</p>
-                <a href="arqueolab.html" class="btn-visit">Explorar Lab</a>
+                <a href="loginlab.html" class="btn-visit">Explorar Lab</a>
             </div>
         </section>
 
@@ -161,7 +251,7 @@
                 <span class="tag">Comunidad</span>
                 <h1>ArqueoConnect</h1>
                 <p>La Red Social para la comunidad científica y apasionados del pasado.</p>
-                <a href="connect.html" class="btn-visit">Conectar</a>
+                <a href="loginconnect.html" class="btn-visit">Conectar</a>
             </div>
         </section>
 
@@ -175,5 +265,16 @@
             <div class="image-side img-fund"></div>
         </section>
     </main>
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('nav-links');
+
+        hamburger.addEventListener('click', () => {
+            // Alternar clase 'active' para mostrar el menú
+            navLinks.classList.toggle('active');
+            // Alternar clase 'open' para la animación de las rayitas
+            hamburger.classList.toggle('open');
+        });
+    </script>
 </body>
 </html>

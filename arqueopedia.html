@@ -165,7 +165,92 @@
         .map-header { padding: 30px 0; }
         .map-header h2 { color: var(--gold); margin: 0; }
         .map-header p { color: #888; margin-top: 10px; }
+        /* ==============================================
+        DISEÑO RESPONSIVO PARA MÓVILES (Max 768px)
+        ============================================== */
+        @media (max-width: 768px) {
+            
+            /* 1. Navbar: De Grid a Flex-Column para evitar solapamientos */
+            .glass-nav {
+                display: flex;
+                flex-direction: column;
+                height: auto; /* Altura automática para que quepa todo */
+                padding: 15px 5%;
+                gap: 10px;
+                text-align: center;
+            }
 
+            /* Ocultamos el módulo lateral para ganar espacio */
+            .nav-module {
+                display: none;
+            }
+
+            /* Título naranja: Reducimos tamaño y quitamos márgenes laterales */
+            .nav-brand-center {
+                font-size: 1.1rem;
+                letter-spacing: 2px;
+                margin: 0;
+                width: 100%;
+                order: 1; /* El título va primero */
+            }
+
+            /* Botón Volver: Centrado debajo del título */
+            .nav-back {
+                text-align: center;
+                width: 100%;
+                order: 2;
+            }
+            
+            .nav-back a {
+                display: inline-block;
+                font-size: 0.75rem;
+                padding: 6px 15px;
+            }
+
+            /* 2. Pestañas: Implementamos scroll horizontal táctil */
+            .museum-tabs {
+                justify-content: flex-start; /* Alineadas a la izquierda */
+                overflow-x: auto; /* Permite deslizar con el dedo */
+                white-space: nowrap; /* Evita que los botones salten de línea */
+                padding: 15px;
+                gap: 15px;
+                -webkit-overflow-scrolling: touch; /* Scroll suave en iOS */
+            }
+
+            .tab-btn {
+                flex: 0 0 auto; /* No permite que los botones se encojan */
+                font-size: 0.75rem;
+            }
+
+            /* 3. Galería: Una sola columna para que las fotos sean grandes */
+            .museum-grid {
+                grid-template-columns: 1fr;
+                padding: 0 5% 30px;
+            }
+
+            .artifact-card {
+                margin-bottom: 10px;
+            }
+
+            .artifact-img {
+                height: 200px; /* Reducimos altura de imagen para móviles */
+            }
+
+            /* 4. Buscador y Filtros */
+            .search-container {
+                margin: 20px 5%;
+            }
+
+            .filter-bar {
+                justify-content: center;
+                margin-bottom: 20px;
+            }
+
+            /* 5. Mapa: Ajuste de altura */
+            #map {
+                height: 400px;
+            }
+        }
     </style>
 </head>
 <body>

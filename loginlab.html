@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArqueoLab Pro - Acceso al Sistema</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --primary: #2e7d32; 
+            --bg: #f4f7f4; 
+            --dark-pro: #0f172a;
+            --gold: #f59e0b;
+            --error: #e74c3c;
+            --nav-height: 4.5rem;
+            --fuente: 'Inter', sans-serif;
+        }
+        
+        body { 
+            background-color: var(--bg); 
+            font-family: var(--fuente); 
+            margin: 0; 
+            color: var(--dark-pro);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .glass-nav {
+            background: var(--dark-pro);
+            color: white;
+            padding: 0 5%;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            height: var(--nav-height);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-sizing: border-box;
+        }
+        .nav-brand-center { font-weight: 900; letter-spacing: 4px; font-size: 1.4rem; color: var(--gold); text-align: center; }
+        
+        /* Botón Volver al Hub */
+        .nav-back a { 
+            color: white; 
+            text-decoration: none; 
+            font-size: 0.75rem; 
+            border: 1px solid rgba(255,255,255,0.2); 
+            padding: 0.5rem 1.2rem; 
+            border-radius: 2rem;
+            transition: 0.3s;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        .nav-back a:hover { background: rgba(255,255,255,0.1); border-color: var(--gold); }
+
+        .login-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-top: var(--nav-height);
+        }
+
+        .login-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            width: 100%;
+            max-width: 420px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .login-header { text-align: center; margin-bottom: 2rem; }
+        .login-header h2 { color: var(--primary); margin: 0; font-size: 1.8rem; font-weight: 800; }
+        .login-header p { color: #64748b; font-size: 0.9rem; margin-top: 0.5rem; }
+
+        label { display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.85rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        input[type="text"], input[type="password"] { 
+            width: 100%; padding: 0.8rem; margin-bottom: 1.2rem; 
+            border: 1px solid #e2e8f0; border-radius: 8px; font-family: inherit;
+            box-sizing: border-box; background-color: #f8fafc;
+        }
+
+        /* Estilo para Carga de Certificado */
+        .cert-container {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            border: 2px dashed #cbd5e1;
+            border-radius: 8px;
+            background: #fdfdfd;
+            text-align: center;
+        }
+        .cert-container label { text-align: center; margin-bottom: 10px; cursor: pointer; }
+        .file-input-wrapper { font-size: 0.8rem; color: #94a3b8; }
+        input[type="file"] { font-size: 0.8rem; margin-top: 5px; cursor: pointer; width: 100%; }
+
+        .btn-login { 
+            width: 100%; padding: 1rem; border-radius: 8px; border: none; 
+            background: var(--dark-pro); color: white;
+            font-weight: 700; font-size: 1rem; cursor: pointer; 
+            transition: 0.3s; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .btn-login:hover { background: var(--primary); transform: translateY(-2px); }
+
+        #mensajeError {
+            background-color: #fff1f0; border: 1px solid #ffa39e; color: var(--error);
+            padding: 0.8rem; border-radius: 8px; font-size: 0.85rem;
+            margin-top: 1rem; display: none; text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="glass-nav">
+    <div class="nav-back"><a href="index.html">← VOLVER AL HUB</a></div>
+    <div class="nav-brand-center">ROBOT CITY POBRA</div>
+    <div></div> </nav>
+
+<div class="login-wrapper">
+    <div class="login-card">
+        <div class="login-header">
+            <h2>Acceso Staff</h2>
+            <p>Sincronización de credenciales ArqueoNet</p>
+        </div>
+
+        <form id="loginForm" onsubmit="return ejecutarLogin(event)">
+            <label for="usuario">ID de Investigador</label>
+            <input type="text" id="usuario" placeholder="Ej: admin" required>
+            
+            <label for="password">Clave de Encriptación</label>
+            <input type="password" id="password" placeholder="••••••••" required>
+
+            <label>Certificado de Seguridad (.crt / .key)</label>
+            <div class="cert-container">
+                <div class="file-input-wrapper">Añadir certificado de laboratorio</div>
+                <input type="file" id="certificado">
+            </div>
+
+            <button type="submit" class="btn-login">Acceso arqueolab</button>
+            
+            <div id="mensajeError">⚠️ Error en la validación del protocolo o certificado.</div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function ejecutarLogin(event) {
+        event.preventDefault();
+
+        // Parámetros falsos
+        const userCorrecto = "admin";
+        const passCorrecta = "1234";
+
+        const userInput = document.getElementById('usuario').value;
+        const passInput = document.getElementById('password').value;
+        const errorDiv = document.getElementById('mensajeError');
+
+        if (userInput === userCorrecto && passInput === passCorrecta) {
+            document.querySelector('.btn-login').innerText = "AUTENTICANDO...";
+            document.querySelector('.btn-login').style.background = "#2e7d32";
+            
+            setTimeout(() => {
+                window.location.href = "arqueolab.html"; // Redirige al archivo principal
+            }, 1000);
+        } else {
+            errorDiv.style.display = "block";
+            document.getElementById('password').value = "";
+        }
+
+        return false;
+    }
+</script>
+
+</body>
+</html>

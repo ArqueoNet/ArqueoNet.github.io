@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArqueoConnect - Acceso Investigadores</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        /* PARÁMETROS BASADOS EN ARQUEOCONNECT */
+        :root {
+            --dark-navy: #0f172a;
+            --museum-bg: #f8fafc;
+            --gold: #f59e0b;
+            --accent-blue: #2563eb;
+            --text-main: #1e293b;
+            --border: #e2e8f0;
+            --card-white: #ffffff;
+            --nav-h: 4.5rem;
+        }
+
+        body { 
+            background-color: var(--museum-bg); 
+            font-family: 'Inter', sans-serif; 
+            margin: 0; 
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        /* Navbar idéntica a ArqueoConnect */
+        .glass-nav {
+            background: var(--dark-navy);
+            color: white;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            height: var(--nav-h);
+            padding: 0 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-sizing: border-box;
+        }
+        .nav-brand { font-weight: 900; letter-spacing: 0.3rem; color: var(--gold); font-size: 1.2rem; }
+        .nav-back a { 
+            color: white; text-decoration: none; font-size: 0.75rem; font-weight: 600;
+            padding: 0.6rem 1.2rem; border: 1px solid rgba(255,255,255,0.2); border-radius: 2rem;
+            transition: 0.3s; text-transform: uppercase;
+        }
+        .nav-back a:hover { background: rgba(255,255,255,0.1); border-color: var(--gold); }
+
+        /* Contenedor de Login */
+        .login-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-top: var(--nav-h);
+        }
+
+        .login-card {
+            background: var(--card-white);
+            padding: 2.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            width: 100%;
+            max-width: 400px;
+            border: 1px solid var(--border);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-header h2 {
+            color: var(--dark-navy);
+            margin: 0;
+            font-size: 1.6rem;
+            font-weight: 800;
+        }
+
+        .login-header p {
+            color: #64748b;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* Formulario */
+        label { 
+            display: block; 
+            margin-bottom: 0.5rem; 
+            font-weight: 700; 
+            font-size: 0.75rem; 
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input[type="text"], input[type="password"] { 
+            width: 100%; 
+            padding: 0.8rem; 
+            margin-bottom: 1.2rem; 
+            border: 1px solid var(--border); 
+            border-radius: 0.6rem; 
+            font-family: inherit;
+            box-sizing: border-box;
+            background-color: #f8fafc;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            background-color: white;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        /* Sección Certificado */
+        .cert-zone {
+            background: #f1f5f9;
+            border: 2px dashed var(--border);
+            border-radius: 0.6rem;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        .cert-zone span { font-size: 0.7rem; color: #64748b; font-weight: 600; display: block; margin-bottom: 5px; }
+        input[type="file"] { font-size: 0.7rem; width: 100%; cursor: pointer; }
+
+        .btn-connect { 
+            width: 100%;
+            padding: 1rem; 
+            border-radius: 0.6rem; 
+            border: none; 
+            background: var(--accent-blue); 
+            color: white;
+            font-weight: 800; 
+            font-size: 0.9rem;
+            cursor: pointer; 
+            transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+        }
+
+        .btn-connect:hover { 
+            background: var(--dark-navy);
+            transform: translateY(-2px);
+        }
+
+        #errorMsg {
+            background-color: #fef2f2;
+            border: 1px solid #fee2e2;
+            color: #b91c1c;
+            padding: 0.8rem;
+            border-radius: 0.6rem;
+            font-size: 0.8rem;
+            margin-top: 1rem;
+            display: none;
+            text-align: center;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="glass-nav">
+    <div class="nav-brand">ARQUEOCONNECT</div>
+    <div style="text-align: center; opacity: 0.5; font-size: 0.8rem; letter-spacing: 2px;">COMUNIDAD CIENTÍFICA</div>
+    <div class="nav-back"><a href="index.html">← VOLVER AL HUB</a></div>
+</nav>
+
+<div class="login-wrapper">
+    <div class="login-card">
+        <div class="login-header">
+            <h2>Acceso a la Red</h2>
+            <p>Portal de Investigadores</p>
+        </div>
+
+        <form id="loginForm" onsubmit="return handleLogin(event)">
+            <label for="user">Usuario Académico</label>
+            <input type="text" id="user" placeholder="Ej: mvalerio_pro" required>
+            
+            <label for="pass">Clave de Red</label>
+            <input type="password" id="pass" placeholder="••••••••" required>
+
+            <label>Token de Certificación (.crt)</label>
+            <div class="cert-zone">
+                <span>Cargar credencial digital</span>
+                <input type="file" id="certFile">
+            </div>
+
+            <button type="submit" class="btn-connect">Iniciar Sincronización</button>
+            
+            <div id="errorMsg">⚠️ Fallo en la autenticación de ArqueoConnect.</div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function handleLogin(event) {
+        event.preventDefault();
+
+        // Simulación de credenciales
+        const validUser = "admin";
+        const validPass = "1234";
+
+        const u = document.getElementById('user').value;
+        const p = document.getElementById('pass').value;
+        const err = document.getElementById('errorMsg');
+
+        if (u === validUser && p === validPass) {
+            const btn = document.querySelector('.btn-connect');
+            btn.innerText = "CONECTANDO...";
+            btn.style.background = "#10b981"; // Color verde de éxito de ArqueoConnect
+            
+            setTimeout(() => {
+                window.location.href = "connect.html"; // Redirige a tu nuevo archivo
+            }, 1000);
+        } else {
+            err.style.display = "block";
+            document.getElementById('pass').value = "";
+        }
+        return false;
+    }
+</script>
+
+</body>
+</html>
