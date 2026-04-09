@@ -92,6 +92,107 @@
         .amount-btn:hover, .amount-btn.active { background: var(--gold); border-color: var(--gold); color: var(--dark); }
         .custom-amount { width: 100%; padding: 15px; border: 1px solid var(--border); border-radius: 10px; margin-bottom: 20px; font-size: 1rem; text-align: center; }
 
+        /* 1. Obligamos a la imagen a no salirse nunca de su contenedor */
+        .artifact-img {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            max-height: 300px; /* Evita que sea excesivamente alta en móvil */
+            object-fit: cover;
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            
+            /* 1. Navegación: Apilada para evitar que el título naranja choque */
+            nav {
+                display: flex;
+                flex-direction: column;
+                height: auto; /* Altura flexible */
+                padding: 15px 5%;
+                gap: 10px;
+                text-align: center;
+            }
+
+            .nav-module {
+                display: none; /* Ocultamos el texto lateral "ARQUEOFUND" */
+            }
+
+            .nav-brand-center {
+                font-size: 1.1rem;
+                letter-spacing: 2px;
+                margin: 0;
+                width: 100%;
+            }
+
+            .nav-back {
+                text-align: center;
+                width: 100%;
+            }
+
+            .nav-back a {
+                display: inline-block;
+                font-size: 0.75rem;
+                padding: 6px 15px;
+            }
+
+            /* 2. Contenedor y Cuerpo del Proyecto */
+            .container {
+                padding: 0 15px; /* Reducimos el padding lateral del contenedor */
+                margin: 20px auto;
+                gap: 20px;
+            }
+            
+            .project-body {
+                padding: 20px; /* En PC era de 40px, demasiado para móvil */
+            }
+
+            /* Reducimos el tamaño del título para que no rompa la caja */
+            #projectTitle {
+                font-size: 1.8rem !important;
+            }
+            
+            /* Hacemos que la etiqueta verde se adapte y no obligue a ensanchar */
+            .tag-verified {
+                white-space: normal;
+                text-align: center;
+                width: 100%;
+                display: block;
+                box-sizing: border-box;
+            }
+
+            /* Reducimos un poco el padding de las estadísticas */
+            .stat-card {
+                padding: 15px 10px;
+            }
+            .stat-card strong {
+                font-size: 1.2rem;
+            }
+            /* 3. Cuadrículas de Estadísticas y Donación */
+            .stats-grid {
+                grid-template-columns: 1fr; /* Una estadística sobre otra */
+                gap: 10px;
+            }
+
+            .amount-grid {
+                grid-template-columns: 1fr; /* Los botones de 10€, 50€... uno por línea */
+            }
+
+            /* 4. Sidebar (Recompensas y Timeline) */
+            aside {
+                order: 2; /* Nos aseguramos de que el contenido secundario vaya abajo */
+            }
+
+            .reward-tier b {
+                font-size: 1rem;
+            }
+
+            /* 5. Modal de Donación */
+            .modal-card {
+                padding: 25px;
+                width: 95%;
+            }
+        }
     </style>
 </head>
 <body>
